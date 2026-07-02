@@ -42,10 +42,13 @@
 - `scripts/Collect-TriageData.ps1`: (NUEVO) recolección en vivo de procesos, red y servicios a CSV.
 - `scripts/Test-HardwareHealth.ps1`: (NUEVO) diagnóstico S.M.A.R.T de discos y memoria vía WMI.
 - `scripts/Initialize-IncidentWorkspace.ps1`: (NUEVO) andamiaje rápido de carpetas estructuradas para un caso.
+- `scripts/Repair-WindowsSystemFiles.ps1`: (NUEVO) automatiza SFC /scannow y DISM RestoreHealth.
+- `scripts/Export-EventLogs.ps1`: (NUEVO) comprime y exporta logs .evtx de Windows para análisis forense.
+- `scripts/Backup-NetworkConfig.ps1`: (NUEVO) vuelca tabla de enrutamiento, IPs y firewall a txt.
 
 ## Nuevos Módulos Integrados
 
-- **`PLAYBOOKS/`**: Guías rápidas y cheatsheets de actuación (Linux, Redes, Windows Forense, Ransomware, BitLocker, RAW, Bypass Contraseñas, TCPDump). Ideal para consultar bajo presión.
+- **`PLAYBOOKS/`**: Guías rápidas y cheatsheets de actuación (Linux, Redes, Windows Forense, Ransomware, BitLocker, RAW, Bypass Contraseñas, TCPDump, Boot Repair). Ideal para consultar bajo presión.
 - **`SECRETS/`**: Protocolo de bóveda segura. Un lugar dedicado para gestionar contraseñas temporales mediante KeePassXC o VeraCrypt sin comprometer texto plano.
 - **`INVENTARIO_HARDWARE.md`**: Checklist físico de cables, adaptadores y herramientas necesarias antes de cualquier salida a campo.
 - **`USB_AUDITORIA_KALI/`**: (Opcional/Aislado) Estructura preparada para alojar entornos ofensivos, exploits y diccionarios, manteniéndolo separado del entorno de rescate legítimo.
