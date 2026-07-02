@@ -12,3 +12,4 @@ Arsenal_Digital/**/audit/
 *.msi
 
 Arsenal_Digital/**/tools/**/*.sha256
+Arsenal_Digital/**/tools/windows/SysinternalsSuite/

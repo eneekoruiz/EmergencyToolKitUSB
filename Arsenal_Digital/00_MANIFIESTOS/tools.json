@@ -125,15 +125,31 @@
     },
     {
       "id": "memtest86plus",
-      "enabled": false,
+      "enabled": true,
       "profile": "USB_RESCATE_VENTOY",
       "version": "8.10",
-      "fileName": "memtest86plus-8.10-grub-x64.iso",
+      "fileName": "mt86plus_8.10_x86_64.grub.iso.zip",
       "destination": "USB_RESCATE_VENTOY/ISO/04_hardware",
-      "url": null,
-      "sha256": null,
-      "source": "https://memtest.org/",
-      "purpose": "Diagnostico de RAM. Desactivado hasta fijar URL directa y SHA-256 del artefacto exacto."
+      "url": "https://memtest.org/download/v8.10/mt86plus_8.10_x86_64.grub.iso.zip",
+      "sha256": "49a7ee7982d4683b8775ee9e79f499fc33d9ff0aac0a824243ab8462e2d14881",
+      "source": "https://memtest.org/download/v8.10/sha256sum.txt",
+      "purpose": "Diagnostico de RAM open source; paquete ZIP oficial con ISO GRUB x86_64."
+    },
+    {
+      "id": "shredos",
+      "enabled": true,
+      "profile": "USB_RESCATE_VENTOY",
+      "version": "v2025.11_30_x86-64_0.41",
+      "fileName": "shredos-latest-x86_64-lite.iso",
+      "destination": "USB_RESCATE_VENTOY/ISO/06_wipe",
+      "github": {
+        "owner": "PartialVolume",
+        "repo": "shredos.x86_64",
+        "tag": "latest",
+        "assetPattern": "shredos-*_x86-64_*_lite.iso"
+      },
+      "source": "https://github.com/PartialVolume/shredos.x86_64/releases/latest",
+      "purpose": "Borrado seguro de discos basado en nwipe; usar solo con autorizacion explicita."
     },
     {
       "id": "clonezilla-live",
