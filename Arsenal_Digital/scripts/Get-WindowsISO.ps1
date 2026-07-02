@@ -1,29 +1,38 @@
 <#
 .SYNOPSIS
-    Script helper para obtener ISOs de Windows.
+    Helper para obtener ISOs oficiales de Windows.
 .DESCRIPTION
-    Debido a licencias, no se incluyen ISOs de Windows.
-    Este script descarga Rufus (que tiene un descargador de ISOs incorporado) 
-    o abre la p??gina oficial de la herramienta de creaci??n de medios de Microsoft.
+    Por licencia no se incluyen ISOs de Windows. Este helper imprime rutas oficiales y recuerda usar
+    Rufus/Fido o Media Creation Tool desde Microsoft. No abre navegador automaticamente salvo que se pida.
 #>
+[CmdletBinding()]
+param(
+    [switch]$OpenOfficialPage
+)
 
-Write-Host "==========================================" -ForegroundColor Cyan
-Write-Host " OBTENCI??N DE ISOs DE WINDOWS Y HERRAMIENTAS" -ForegroundColor Cyan
-Write-Host "==========================================" -ForegroundColor Cyan
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
-Write-Host "1. Abriendo p??gina de Microsoft para Media Creation Tool (Windows 10/11)..."
-Start-Process "https://www.microsoft.com/software-download/"
+$officialUrl = 'https://www.microsoft.com/software-download/'
+$ScriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+$Root = (Resolve-Path (Join-Path $ScriptRoot '..')).Path
+$rufusPath = Join-Path $Root 'USB_RESCATE_VENTOY\tools\windows\rufus-4.15.exe'
+$windowsIsoDir = Join-Path $Root 'USB_RESCATE_VENTOY\ISO\05_installers\windows'
 
-Write-Host "2. Descargando Rufus Portable (Excelente para crear USBs y descargar ISOs oficiales usando Fido script)..."
-$ToolsDir = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Definition) "..\tools"
-if (-not (Test-Path $ToolsDir)) { New-Item -ItemType Directory -Path $ToolsDir | Out-Null }
+Write-Host '==========================================' -ForegroundColor Cyan
+Write-Host ' WINDOWS ISO ACQUISITION HELPER' -ForegroundColor Cyan
+Write-Host '==========================================' -ForegroundColor Cyan
+Write-Host 'Official Microsoft download page:'
+Write-Host $officialUrl -ForegroundColor Yellow
+Write-Host ''
+Write-Host 'Recommended workflow:'
+Write-Host '1. Use Microsoft Media Creation Tool or Rufus download mode.'
+Write-Host '2. Save Windows ISOs under:'
+Write-Host "   $windowsIsoDir" -ForegroundColor Yellow
+Write-Host '3. Record source URL, date, edition, language and SHA-256 in a case note.'
+Write-Host '4. Do not upload Windows ISOs to GitHub.'
+Write-Host ''
+if (Test-Path $rufusPath) { Write-Host "Rufus present: $rufusPath" -ForegroundColor Green }
+else { Write-Warning "Rufus not found at expected path: $rufusPath" }
 
-# Descarga la ??ltima versi??n de Rufus portable desde GitHub releases (requiere parsear API)
-# Por simplicidad, damos instrucciones de uso de Rufus
-Write-Host ""
-Write-Host "Recomendaci??n: Descarga Rufus desde https://rufus.ie/" -ForegroundColor Yellow
-Write-Host "Dentro de Rufus, haz clic en la flecha peque??a junto a 'SELECCIONAR' y c??mbiala a 'DESCARGAR'." -ForegroundColor Yellow
-Write-Host "Esto ejecutar?? un script oficial que permite descargar ISOs limpias de Windows 10, Windows 11, etc. directamente de los servidores de Microsoft." -ForegroundColor Yellow
-Write-Host "Guarda esas ISOs en tu carpeta /USB_RESCATE_VENTOY/ISO para que Ventoy las pueda arrancar." -ForegroundColor Yellow
-
-Read-Host "Presiona ENTER para salir"
+if ($OpenOfficialPage) { Start-Process $officialUrl }
