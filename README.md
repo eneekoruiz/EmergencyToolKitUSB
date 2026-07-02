@@ -42,6 +42,7 @@ La seleccion prioriza software vivo, mantenido y de fuente oficial:
 - Memtest86+ 8.10 extraido como ISO arrancable para diagnostico RAM.
 - ShredOS para borrado seguro controlado de discos.
 - Sysinternals Suite y Microsoft Safety Scanner x64 como kit Windows firmado.
+- TestDisk/PhotoRec 7.2 Win64 como recuperacion portable de particiones y archivos.
 - Rufus, KeePassXC, VeraCrypt y utilidades Windows como carga auxiliar opcional resuelta desde GitHub cuando procede.
 
 ## Riesgos principales corregidos
@@ -50,6 +51,7 @@ La seleccion prioriza software vivo, mantenido y de fuente oficial:
 - Antivirus offline con firmas caducadas puede dar falsa seguridad. Se documenta como apoyo, no como decision final.
 - Persistencia de Tails puede vincular identidades si se mezclan misiones. El protocolo separa identidades y recomienda reinicios entre contextos.
 - Herramientas forenses ejecutadas sobre discos montados en escritura pueden destruir evidencia. Los runbooks empiezan con inventario y modo solo lectura.
+
 
 
 

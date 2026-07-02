@@ -124,6 +124,18 @@
       "purpose": "Gestion de credenciales offline en KDBX con paquete Win64 ZIP verificable."
     },
     {
+      "id": "testdisk-photorec-win64",
+      "enabled": true,
+      "profile": "USB_RESCATE_VENTOY",
+      "version": "7.2",
+      "fileName": "testdisk-7.2.win64.zip",
+      "destination": "USB_RESCATE_VENTOY/tools/windows/data-recovery",
+      "url": "https://www.cgsecurity.org/testdisk-7.2.win64.zip",
+      "sha256": "e97e203ce77b6b1a3a37d01beccf069dc6c4632b579ffbb82ae739cdda229f38",
+      "source": "https://www.cgsecurity.org/testdisk_sha256.txt",
+      "purpose": "TestDisk y PhotoRec portables para recuperar particiones, boot sectors y archivos desde Windows."
+    },
+    {
       "id": "memtest86plus",
       "enabled": true,
       "profile": "USB_RESCATE_VENTOY",
