@@ -34,4 +34,15 @@
 - `scripts/Export-ToUsb.ps1`: copia estructura a unidades USB montadas.
 - `scripts/Get-DiskSnapshot.ps1`: inventario no destructivo de discos Windows.
 - `scripts/New-RescueCaseLog.ps1`: abre una bitacora de caso.
+- `scripts/Backup-UserProfiles.ps1`: backup agresivo de perfiles de usuario.
+- `scripts/Secure-WipeDisk.ps1`: borrado seguro de discos físicos con DiskPart.
+- `scripts/Download-EmergencyTools.ps1`: automatiza descarga de Sysinternals (evitando falsos positivos).
+- `scripts/Get-WindowsISO.ps1`: instrucciones/helpers para obtener ISOs de Windows limpias.
+
+## Nuevos Módulos Integrados
+
+- **`PLAYBOOKS/`**: Guías rápidas y cheatsheets de actuación (Linux, Redes, Windows Forense, Ransomware). Ideal para consultar bajo presión.
+- **`SECRETS/`**: Protocolo de bóveda segura. Un lugar dedicado para gestionar contraseñas temporales mediante KeePassXC o VeraCrypt sin comprometer texto plano.
+- **`INVENTARIO_HARDWARE.md`**: Checklist físico de cables, adaptadores y herramientas necesarias antes de cualquier salida a campo.
+- **`USB_AUDITORIA_KALI/`**: (Opcional/Aislado) Estructura preparada para alojar entornos ofensivos, exploits y diccionarios, manteniéndolo separado del entorno de rescate legítimo.
 
