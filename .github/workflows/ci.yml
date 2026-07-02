@@ -1,0 +1,39 @@
+name: Arsenal Digital CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate-and-analyze:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Run PSScriptAnalyzer
+      shell: pwsh
+      run: |
+        Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+        $results = Invoke-ScriptAnalyzer -Path .\Arsenal_Digital\scripts\*.ps1 -Recurse
+        if ($results) {
+          $results | Format-Table
+          $errors = $results | Where-Object { $_.Severity -eq 'Error' }
+          if ($errors) {
+            Write-Error "PSScriptAnalyzer found errors."
+            exit 1
+          }
+        } else {
+          Write-Host "PSScriptAnalyzer passed successfully."
+        }
+
+    - name: Verify Arsenal Integrity and Validation
+      shell: pwsh
+      run: |
+        # Ejecuta la validación operativa
+        # Omitimos Verify-Arsenal porque en CI no están descargados los binarios pesados,
+        # pero verificamos que los scripts de validación se ejecuten sin errores.
+        .\Arsenal_Digital\scripts\Validate-Arsenal.ps1

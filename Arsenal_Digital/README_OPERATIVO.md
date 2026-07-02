@@ -47,6 +47,12 @@
 - `scripts/Backup-NetworkConfig.ps1`: (NUEVO) vuelca tabla de enrutamiento, IPs y firewall a txt.
 - `scripts/Export-SystemInventory.ps1`: (NUEVO) extrae número de serie, licencia de Windows (Product Key) y software.
 - `scripts/Secure-WipeFile.ps1`: (NUEVO) trituradora quirúrgica para borrado seguro DoD de archivos/carpetas sueltas.
+- `scripts/Start-ArsenalAudit.ps1`: (NUEVO) Inicia una transcripción inmutable de la sesión de respuesta a incidentes.
+- `scripts/Query-VirusTotal.ps1`: (NUEVO) Automatización de Threat Intelligence. Consulta hashes en la API de VT.
+
+## Infraestructura de Grado Empresarial (CI/CD)
+
+Este repositorio incorpora **Integración Continua (GitHub Actions)** a través de `.github/workflows/ci.yml`. Cada vez que se suben cambios, los servidores analizan automáticamente la sintaxis de PowerShell (`PSScriptAnalyzer`) y ejecutan `Validate-Arsenal.ps1` para asegurar que ninguna modificación rompe la cadena de confianza.
 
 ## Nuevos Módulos Integrados
 
