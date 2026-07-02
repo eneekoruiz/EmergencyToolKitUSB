@@ -55,3 +55,13 @@ La seleccion prioriza software vivo, mantenido y de fuente oficial:
 
 
 
+
+## Validacion operacional
+
+```powershell
+.\Arsenal_Digital\scripts\Verify-Arsenal.ps1
+.\Arsenal_Digital\scripts\Validate-Arsenal.ps1
+.\Arsenal_Digital\scripts\Update-Arsenal.ps1 -RefreshWindowsFieldKit
+```
+
+El arsenal no se considera listo para campo hasta completar `Arsenal_Digital/TESTED_BOOT_MATRIX.md` en hardware real.

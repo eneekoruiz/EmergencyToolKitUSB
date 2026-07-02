@@ -56,3 +56,11 @@
 - **`USB_AUDITORIA_KALI/`**: (Opcional/Aislado) Estructura preparada para alojar entornos ofensivos, exploits y diccionarios, manteniéndolo separado del entorno de rescate legítimo.
 - **`THREAT_HUNTING/`**: (NUEVO) Base de conocimientos para YARA rules e Indicadores de Compromiso. Separado para evitar bloqueos por falsos positivos del AV local.
 
+
+## Validacion de nivel 100
+
+- `scripts/Validate-Arsenal.ps1`: valida scripts, payloads criticos, sidecars, firma de MSERT y documentos obligatorios.
+- `scripts/Update-Arsenal.ps1`: actualiza payloads verificados y genera `UPDATE_REPORT_*.md`.
+- `TESTED_BOOT_MATRIX.md`: matriz obligatoria de arranque real.
+- `OPERATIONAL_ACCEPTANCE_CHECKLIST.md`: checklist antes de considerar el arsenal listo para campo.
+- `00_MANIFIESTOS/CHAIN_OF_TRUST.md`: reglas de confianza y excepciones permitidas.

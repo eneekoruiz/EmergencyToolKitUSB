@@ -1,81 +1,98 @@
 <#
 .SYNOPSIS
-    Trituradora de archivos (Sobrescritura segura).
+    Borrado best-effort de archivos o carpetas.
 .DESCRIPTION
-    Borra un archivo o carpeta sobrescribiendo su contenido mltiples veces
-    para evitar la recuperacin forense, sin tener que formatear el disco completo.
-    ATENCIN: Irreversible.
+    Sobrescribe contenido antes de borrar, pero no garantiza destruccion forense en SSD, NTFS journal,
+    shadow copies, backups, indexadores o almacenamiento con wear leveling.
 #>
+[CmdletBinding(SupportsShouldProcess)]
 param(
-    [Parameter(Mandatory=$true)]
-    [string]$Target,
-    
-    [Parameter(Mandatory=$false)]
-    [int]$Passes = 3
+    [Parameter(Mandatory)] [string]$Target,
+    [ValidateRange(1,7)] [int]$Passes = 1,
+    [switch]$AcknowledgeLimitations,
+    [string]$AuditDirectory
 )
 
-if (-not (Test-Path $Target)) {
-    Write-Error "Ruta no encontrada: $Target"
-    exit
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+
+$ScriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+$Root = (Resolve-Path (Join-Path $ScriptRoot '..')).Path
+if (-not $AuditDirectory) { $AuditDirectory = Join-Path $Root 'audit' }
+New-Item -ItemType Directory -Force -Path $AuditDirectory | Out-Null
+$AuditPath = Join-Path $AuditDirectory ('wipe-file-{0}.jsonl' -f (Get-Date -Format 'yyyyMMdd-HHmmss'))
+
+function Write-Audit {
+    param([string]$Event, [hashtable]$Data)
+    $record = [ordered]@{ timestamp = (Get-Date).ToUniversalTime().ToString('o'); event = $Event }
+    foreach ($key in $Data.Keys) { $record[$key] = $Data[$key] }
+    ($record | ConvertTo-Json -Compress -Depth 6) | Add-Content -Path $AuditPath -Encoding UTF8
 }
 
-Write-Host "=========================================" -ForegroundColor Red
-Write-Host " TRITURADORA QUIRRGICA (SECURE WIPE) " -ForegroundColor Red
-Write-Host "=========================================" -ForegroundColor Red
-Write-Host "Objetivo: $Target"
-Write-Host "Pasadas: $Passes"
-Write-Host "-----------------------------------------"
-
-$confirm = Read-Host "Escribe 'DESTRUIR' para sobrescribir y eliminar permanentemente este objetivo"
-if ($confirm -cne 'DESTRUIR') {
-    Write-Host "Operacin cancelada." -ForegroundColor Green
-    exit
-}
-
-function Invoke-SecureWipeFile {
+function Invoke-BestEffortWipeFile {
     param([string]$FilePath, [int]$PassCount)
-    
-    $fileInfo = New-Object System.IO.FileInfo($FilePath)
-    $length = $fileInfo.Length
-    
+    $fileInfo = Get-Item -LiteralPath $FilePath -Force
+    if ($fileInfo.Length -eq 0) { Remove-Item -LiteralPath $FilePath -Force; return }
+
     for ($i = 1; $i -le $PassCount; $i++) {
-        Write-Host "  -> Pasada $i de $PassCount en $FilePath..."
-        # Llenar el archivo con ceros o bytes aleatorios
-        $random = New-Object byte[] 4096
-        
-        $stream = [System.IO.File]::Open($FilePath, 'Open', 'Write')
-        $rng = [System.Security.Cryptography.RNGCryptoServiceProvider]::Create()
-        
-        $bytesWritten = 0
-        while ($bytesWritten -lt $length) {
-            $rng.GetBytes($random)
-            $writeCount = [Math]::Min($random.Length, $length - $bytesWritten)
-            $stream.Write($random, 0, $writeCount)
-            $bytesWritten += $writeCount
+        Write-Host "  -> Pasada $i/${PassCount}: $FilePath"
+        $buffer = New-Object byte[] 1048576
+        $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+        $stream = [System.IO.File]::Open($FilePath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
+        try {
+            $remaining = $fileInfo.Length
+            while ($remaining -gt 0) {
+                $rng.GetBytes($buffer)
+                $writeCount = [Math]::Min($buffer.Length, $remaining)
+                $stream.Write($buffer, 0, $writeCount)
+                $remaining -= $writeCount
+            }
+            $stream.Flush($true)
         }
-        $stream.Close()
+        finally {
+            $stream.Dispose()
+            $rng.Dispose()
+        }
     }
-    
-    # Renombrar archivo antes de borrar (rompe rastro del MFT)
-    $newName = [guid]::NewGuid().ToString()
+
+    $newName = [guid]::NewGuid().ToString('N')
+    Rename-Item -LiteralPath $FilePath -NewName $newName -Force
     $newPath = Join-Path $fileInfo.DirectoryName $newName
-    Rename-Item -Path $FilePath -NewName $newName -Force
-    
-    # Borrar
-    Remove-Item -Path $newPath -Force
-    Write-Host "  [OK] Destruido: $FilePath" -ForegroundColor Green
+    Remove-Item -LiteralPath $newPath -Force
+    Write-Audit -Event 'file_wiped' -Data @{ path = $FilePath; bytes = $fileInfo.Length; passes = $PassCount }
 }
 
-if (Test-Path $Target -PathType Container) {
-    # Es un directorio, triturar todo recursivamente
-    $files = Get-ChildItem -Path $Target -File -Recurse
+$resolved = Resolve-Path -LiteralPath $Target -ErrorAction Stop
+Write-Host '=========================================' -ForegroundColor Red
+Write-Host ' BORRADO BEST-EFFORT DE ARCHIVOS' -ForegroundColor Red
+Write-Host '=========================================' -ForegroundColor Red
+Write-Host "Objetivo: $($resolved.Path)"
+Write-Host "Pasadas: $Passes"
+Write-Host 'LIMITACION: no garantiza destruccion forense en SSD, shadow copies, backups, journal NTFS o almacenamiento remoto.' -ForegroundColor Yellow
+
+if (-not $AcknowledgeLimitations) {
+    $ack = Read-Host 'Escribe ENTIENDO-LIMITACIONES para continuar'
+    if ($ack -cne 'ENTIENDO-LIMITACIONES') { throw 'Limitaciones no aceptadas. Abortado.' }
+}
+$confirm = Read-Host 'Escribe DESTRUIR para sobrescribir y eliminar permanentemente el objetivo'
+if ($confirm -cne 'DESTRUIR') { throw 'Confirmacion incorrecta. Abortado.' }
+
+$item = Get-Item -LiteralPath $resolved.Path -Force
+if ($item.PSIsContainer) {
+    $files = Get-ChildItem -LiteralPath $item.FullName -File -Recurse -Force
     foreach ($file in $files) {
-        Invoke-SecureWipeFile -FilePath $file.FullName -PassCount $Passes
+        if ($PSCmdlet.ShouldProcess($file.FullName, 'overwrite and delete')) {
+            Invoke-BestEffortWipeFile -FilePath $file.FullName -PassCount $Passes
+        }
     }
-    Remove-Item -Path $Target -Recurse -Force
+    if ($PSCmdlet.ShouldProcess($item.FullName, 'remove directory')) {
+        Remove-Item -LiteralPath $item.FullName -Recurse -Force
+    }
 } else {
-    # Es un archivo
-    Invoke-SecureWipeFile -FilePath $Target -PassCount $Passes
+    if ($PSCmdlet.ShouldProcess($item.FullName, 'overwrite and delete')) {
+        Invoke-BestEffortWipeFile -FilePath $item.FullName -PassCount $Passes
+    }
 }
 
-Write-Host "`nOperacin Quirrgica completada." -ForegroundColor Yellow
+Write-Host 'Borrado best-effort completado.' -ForegroundColor Green
+
