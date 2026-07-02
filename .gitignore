@@ -1,0 +1,14 @@
+Arsenal_Digital/**/downloads/
+Arsenal_Digital/**/ISO/
+Arsenal_Digital/**/images/
+Arsenal_Digital/**/logs/
+Arsenal_Digital/**/audit/
+*.iso
+*.img
+*.zip
+*.tar.gz
+*.7z
+*.exe
+*.msi
+
+Arsenal_Digital/**/tools/**/*.sha256

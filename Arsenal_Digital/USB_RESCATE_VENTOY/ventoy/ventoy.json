@@ -1,0 +1,22 @@
+{
+  "control": [
+    { "VTOY_DEFAULT_MENU_MODE": "1" },
+    { "VTOY_TREE_VIEW_MENU_STYLE": "1" },
+    { "VTOY_SECONDARY_BOOT_MENU": "1" }
+  ],
+  "menu_alias": [
+    {
+      "image": "/ISO/01_rescue/systemrescue-13.01-amd64.iso",
+      "alias": "SystemRescue 13.01 - reparacion avanzada"
+    },
+    {
+      "image": "/ISO/02_partitioning/gparted-live-1.8.1-3-amd64.iso",
+      "alias": "GParted Live 1.8.1-3 - particiones"
+    },
+    {
+      "image": "/ISO/03_imaging/rescuezilla-2.6.2-64bit.resolute.iso",
+      "alias": "Rescuezilla 2.6.2 - imagen y restauracion"
+    }
+  ]
+}
+
