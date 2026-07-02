@@ -39,11 +39,15 @@
 - `scripts/Download-EmergencyTools.ps1`: automatiza descarga de Sysinternals (evitando falsos positivos).
 - `scripts/Get-WindowsISO.ps1`: instrucciones/helpers para obtener ISOs de Windows limpias.
 - `scripts/Backup-WindowsDrivers.ps1`: extrae todos los drivers del PC (ideal antes de formatear).
+- `scripts/Collect-TriageData.ps1`: (NUEVO) recolección en vivo de procesos, red y servicios a CSV.
+- `scripts/Test-HardwareHealth.ps1`: (NUEVO) diagnóstico S.M.A.R.T de discos y memoria vía WMI.
+- `scripts/Initialize-IncidentWorkspace.ps1`: (NUEVO) andamiaje rápido de carpetas estructuradas para un caso.
 
 ## Nuevos Módulos Integrados
 
-- **`PLAYBOOKS/`**: Guías rápidas y cheatsheets de actuación (Linux, Redes, Windows Forense, Ransomware, BitLocker, RAW). Ideal para consultar bajo presión.
+- **`PLAYBOOKS/`**: Guías rápidas y cheatsheets de actuación (Linux, Redes, Windows Forense, Ransomware, BitLocker, RAW, Bypass Contraseñas, TCPDump). Ideal para consultar bajo presión.
 - **`SECRETS/`**: Protocolo de bóveda segura. Un lugar dedicado para gestionar contraseñas temporales mediante KeePassXC o VeraCrypt sin comprometer texto plano.
 - **`INVENTARIO_HARDWARE.md`**: Checklist físico de cables, adaptadores y herramientas necesarias antes de cualquier salida a campo.
 - **`USB_AUDITORIA_KALI/`**: (Opcional/Aislado) Estructura preparada para alojar entornos ofensivos, exploits y diccionarios, manteniéndolo separado del entorno de rescate legítimo.
+- **`THREAT_HUNTING/`**: (NUEVO) Base de conocimientos para YARA rules e Indicadores de Compromiso. Separado para evitar bloqueos por falsos positivos del AV local.
 
