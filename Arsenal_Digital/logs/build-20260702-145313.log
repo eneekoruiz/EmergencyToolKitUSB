@@ -1,0 +1,24 @@
+﻿**********************
+Inicio de la transcripción de Windows PowerShell
+Hora de inicio: 20260702145314
+Nombre de usuario: HP-ENEKO\User
+Usuario RunAs: HP-ENEKO\User
+Nombre de la configuración: 
+Máquina: HP-ENEKO (Microsoft Windows NT 10.0.19045.0)
+Aplicación host: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File Arsenal_Digital\scripts\Build-Arsenal.ps1
+Id. de proceso: 3984
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Downloading memtest86plus 8.10 -> mt86plus_8.10_x86_64.grub.iso.zip
+Downloading shredos v2025.11_30_x86-64_0.41 -> shredos-2025.11_30_x86-64_v0.41_20260520_lite.iso
+**********************
+Fin de la transcripción de Windows PowerShell
+Hora de finalización: 20260702145646
+**********************

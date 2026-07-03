@@ -1,0 +1,34 @@
+﻿**********************
+Inicio de la transcripción de Windows PowerShell
+Hora de inicio: 20260702103305
+Nombre de usuario: HP-ENEKO\User
+Usuario RunAs: HP-ENEKO\User
+Nombre de la configuración: 
+Máquina: HP-ENEKO (Microsoft Windows NT 10.0.19045.0)
+Aplicación host: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File Arsenal_Digital\scripts\Build-Arsenal.ps1 -PlanOnly
+Id. de proceso: 4364
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+
+id                 enabled profile              version fileName                             destination
+--                 ------- -------              ------- --------                             -----------
+tails-usb-image       True USB_PRIVACIDAD_TAILS 7.9.1   tails-amd64-7.9.1.img                USB_PRIVACIDAD_TAILS/im...
+ventoy-windows        True USB_RESCATE_VENTOY   1.1.16  ventoy-1.1.16-windows.zip            USB_RESCATE_VENTOY/tool...
+systemrescue          True USB_RESCATE_VENTOY   13.01   systemrescue-13.01-amd64.iso         USB_RESCATE_VENTOY/ISO/...
+gparted-live          True USB_RESCATE_VENTOY   1.8.1-3 gparted-live-1.8.1-3-amd64.iso       USB_RESCATE_VENTOY/ISO/...
+rescuezilla           True USB_RESCATE_VENTOY   2.6.2   rescuezilla-2.6.2-64bit.resolute.iso USB_RESCATE_VENTOY/ISO/...
+rufus                 True USB_RESCATE_VENTOY   latest  rufus-latest.exe                     USB_RESCATE_VENTOY/tool...
+keepassxc-portable    True USB_RESCATE_VENTOY   latest  keepassxc-portable-latest.zip        USB_RESCATE_VENTOY/tool...
+
+
+**********************
+Fin de la transcripción de Windows PowerShell
+Hora de finalización: 20260702103306
+**********************

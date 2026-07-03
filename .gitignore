@@ -1,15 +1,3 @@
-Arsenal_Digital/**/downloads/
-Arsenal_Digital/**/ISO/
-Arsenal_Digital/**/images/
-Arsenal_Digital/**/logs/
-Arsenal_Digital/**/audit/
-*.iso
-*.img
-*.zip
-*.tar.gz
-*.7z
-*.exe
-*.msi
-
-Arsenal_Digital/**/tools/**/*.sha256
-Arsenal_Digital/**/tools/windows/SysinternalsSuite/
+# GitHub LFS rejects objects larger than 2 GiB; these are tracked as .iso.part* chunks instead.
+Arsenal_Digital/USB_RESCATE_VENTOY/ISO/05_installers/ubuntu-26.04-desktop-amd64.iso
+Arsenal_Digital/USB_RESCATE_VENTOY/ISO/05_installers/ubuntu-26.04-live-server-amd64.iso
