@@ -7,7 +7,8 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$Root
+    [string]$Root,
+    [switch]$SkipPayloadCheck = [bool]$env:CI
 )
 
 Set-StrictMode -Version Latest
@@ -39,20 +40,24 @@ $critical = @(
     'USB_RESCATE_VENTOY\tools\windows\SysinternalsSuite.zip',
     'USB_RESCATE_VENTOY\tools\windows\data-recovery\testdisk-7.2.win64.zip'
 )
-foreach ($rel in $critical) {
-    $path = Join-Path $Root $rel
-    if (-not (Test-Path $path)) { Add-Failure "Missing critical payload: $rel"; continue }
-    if (-not (Test-Path "$path.sha256")) { Add-Failure "Missing SHA-256 sidecar: $rel" }
-}
-
-$msert = Join-Path $Root 'USB_RESCATE_VENTOY\tools\windows\msert-x64.exe'
-if (Test-Path $msert) {
-    $age = ((Get-Date) - (Get-Item $msert).LastWriteTime).TotalDays
-    if ($age -gt 10) { Add-Warning "MSERT older than 10 days: $([math]::Round($age,1)) days" }
-    $sig = Get-AuthenticodeSignature -FilePath $msert
-    if ($sig.Status -ne 'Valid' -or -not $sig.SignerCertificate -or $sig.SignerCertificate.Subject -notmatch 'Microsoft Corporation') {
-        Add-Failure "MSERT signature invalid: $($sig.Status)"
+if (-not $SkipPayloadCheck) {
+    foreach ($rel in $critical) {
+        $path = Join-Path $Root $rel
+        if (-not (Test-Path $path)) { Add-Failure "Missing critical payload: $rel"; continue }
+        if (-not (Test-Path "$path.sha256")) { Add-Failure "Missing SHA-256 sidecar: $rel" }
     }
+
+    $msert = Join-Path $Root 'USB_RESCATE_VENTOY\tools\windows\msert-x64.exe'
+    if (Test-Path $msert) {
+        $age = ((Get-Date) - (Get-Item $msert).LastWriteTime).TotalDays
+        if ($age -gt 10) { Add-Warning "MSERT older than 10 days: $([math]::Round($age,1)) days" }
+        $sig = Get-AuthenticodeSignature -FilePath $msert
+        if ($sig.Status -ne 'Valid' -or -not $sig.SignerCertificate -or $sig.SignerCertificate.Subject -notmatch 'Microsoft Corporation') {
+            Add-Failure "MSERT signature invalid: $($sig.Status)"
+        }
+    }
+} else {
+    Write-Host 'Skipping physical ISO and binary payload checks in CI mode.'
 }
 
 $requiredDocs = @(
@@ -73,4 +78,3 @@ if ($failures.Count -gt 0) {
     exit 2
 }
 Write-Host 'Operational validation OK.'
-
